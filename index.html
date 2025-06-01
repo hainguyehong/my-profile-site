@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif; /* Chuyển sang font đã load */
+    background-color: #000;
+    color: #fff;
+    overflow-x: hidden; /* Tránh scroll ngang */
+}
+
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    perspective: 1000px;
+    position: relative;
+    z-index: 1;
+    padding: 20px; /* Để không dính sát màn hình nhỏ */
+    box-sizing: border-box;
+}
+
+.card {
+    width: 100%;
+    max-width: 350px; /* Giới hạn max width cho màn lớn */
+    height: auto; /* cho chiều cao tự động */
+    min-height: 480px;
+    background: rgba(20, 20, 20, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 20px; /* tạo khoảng dưới */
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transform: translateY(-100%);
+    transition: transform 0.6s;
+    border-radius: 20px;
+}
+
+.card:hover::before {
+    transform: translateY(100%);
+}
+
+.card-content {
+    padding: 20px;
+    transform-style: preserve-3d;
+}
+
+.card-title {
+    font-size: 1.5rem; /* chuyển sang rem dễ scale */
+    margin-bottom: 10px;
+    transform: translateZ(50px);
+    text-align: center;
+    word-break: break-word;
+}
+
+.card-description {
+    font-size: 0.875rem;
+    color: #ccc;
+    margin-bottom: 20px;
+    transform: translateZ(30px);
+    text-align: center;
+}
+
+.card-image {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transform: translateZ(70px);
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    transform: translateZ(40px);
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #00ffff;
+    color: #000;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+}
+
+.btn:hover {
+    transform: scale(1.05) translateZ(5px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+    transform: translateZ(20px);
+}
+
+.social-icons a {
+    color: #00ffff;
+    font-size: 18px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #fff;
+    transform: scale(1.2);
+}
+
+.sound-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 18px;
+    color: #00ffff;
+    cursor: pointer;
+    z-index: 2;
+    transform: translateZ(90px);
+}
+
+.sound-icon:hover {
+    color: #fff;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 480px) {
+    .card-container {
+        height: auto;
+        padding: 10px;
+    }
+    .card {
+        max-width: 100%;
+        min-height: auto;
+        height: auto;
+        padding-bottom: 15px;
+    }
+    .card-title {
+        font-size: 1.3rem;
+    }
+    .card-description {
+        font-size: 0.8rem;
+    }
+    .card-image {
+        height: 140px;
+    }
+    .btn {
+        font-size: 13px;
+        padding: 8px 15px;
+    }
+    .social-icons a {
+        font-size: 16px;
+    }
+}
+
+    </style>
+</head>
+<body>
+  <audio id="bg-music" autoplay loop muted>
+  <source src="./audio/intro.mp4" type="audio/mp3">
+</audio>
+
+<script>
+  const music = document.getElementById('bg-music');
+
+  function tryPlayMusic() {
+    music.muted = false;
+    music.play().catch(e => {
+      console.log("Play failed:", e);
+    });
+  }
+
+  // Di chuột, click, hoặc nhấn phím đều có thể kích hoạt
+  ['mousemove', 'click', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, tryPlayMusic, { once: true });
+  });
+</script>
+
+
+
+    <div id="particles-js"></div>
+    <div class="card-container">
+        <div class="card">
+            <div class="sound-icon" id="soundToggle">
+                <!-- <i class="fas fa-volume-up"></i> -->
+            </div>
+            <div class="card-content">
+                <h2 class="card-title" style="text-align: center; ">Hải Nguyễn</h2>
+                <p class="card-description" style="text-align: center; ">Vấn vương kỉ niệm - Lưu giữ trong tim </p>
+                <div class="card-image"></div>
+                <div class="card-actions">
+                    <a href="#" class="btn btn-secondary">Click</a>
+                    <button class="btn btn-primary">Follow me</button>
+                </div> <br>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/hong.hai.7524"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.tiktok.com/@hainguyen_191"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/hai_nguyen_191/"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fa-solid fa-phone"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const card = document.querySelector('.card');
+        const container = document.querySelector('.card-container');
+        const cardImage = document.querySelector('.card-image');
+
+        let isMouseOver = false;
+        let rotateX = 0;
+        let rotateY = 0;
+
+        function lerp(start, end, t) {
+            return start * (1 - t) + end * t;
+        }
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function updateCardTransform() {
+            const transformString = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            card.style.transform = transformString;
+        }
+
+        function animate() {
+            if (!isMouseOver) {
+                rotateX = lerp(rotateX, 0, 0.05);
+                rotateY = lerp(rotateY, 0, 0.05);
+            }
+            updateCardTransform();
+            requestAnimationFrame(animate);
+        }
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isMouseOver) return;
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const mouseX = e.clientX - centerX;
+            const mouseY = e.clientY - centerY;
+
+            rotateY = clamp(mouseX / 10, -15, 15);
+            rotateX = clamp(-mouseY / 10, -15, 15);
+        });
+
+        container.addEventListener('mouseenter', () => {
+            isMouseOver = true;
+            card.style.transition = 'none';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isMouseOver = false;
+            card.style.transition = 'transform 0.6s';
+        });
+
+        // Set image
+        const imageURL = './img/image.jpg'; 
+        cardImage.style.backgroundImage = `url(${imageURL})`;
+
+        // ParticlesJS
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+                size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.1, sync: false } },
+                line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: { enable: true, rotateX: 600, rotateY: 1200 }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 140, line_linked: { opacity: 1 } },
+                    bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                    repulse: { distance: 200, duration: 0.4 },
+                    push: { particles_nb: 4 },
+                    remove: { particles_nb: 2 }
+                }
+            },
+            retina_detect: true
+        });
+
+        animate();
+
+        // Toggle sound icon
+        const soundToggle = document.getElementById('soundToggle');
+        const soundIcon = soundToggle.querySelector('i');
+        let isMuted = false;
+
+        soundToggle.addEventListener('click', () => {
+            isMuted = !isMuted;
+            soundIcon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        });
+    </script>
+</body>
+</html>
